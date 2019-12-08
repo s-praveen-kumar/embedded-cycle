@@ -1,0 +1,11 @@
+*.o
+*.hex
+*.elf
+
+bin/
+
+*.lib
+*.pro
+*.bak
+
+test.c

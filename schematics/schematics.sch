@@ -1,0 +1,298 @@
+EESchema Schematic File Version 4
+LIBS:schematics-cache
+EELAYER 26 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title "Embedded System for Bicycle"
+Date "2019-12-06"
+Rev "0.1"
+Comp "Praveen Kumar S"
+Comment1 ""
+Comment2 "iQube December Project"
+Comment3 "18BEC105"
+Comment4 "Praveen Kumar S"
+$EndDescr
+$Comp
+L Display_Character:WC1602A DS?
+U 1 1 5DE9F99A
+P 4500 4450
+F 0 "DS?" H 4500 5428 50  0000 C CNN
+F 1 "LCD" H 4500 5337 50  0000 C CNN
+F 2 "Display:WC1602A" H 4500 3550 50  0001 C CIN
+F 3 "http://www.wincomlcd.com/pdf/WC1602A-SFYLYHTC06.pdf" H 5200 4450 50  0001 C CNN
+	1    4500 4450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5DE9FDDD
+P 2550 4850
+F 0 "#PWR?" H 2550 4600 50  0001 C CNN
+F 1 "GND" H 2555 4677 50  0000 C CNN
+F 2 "" H 2550 4850 50  0001 C CNN
+F 3 "" H 2550 4850 50  0001 C CNN
+	1    2550 4850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2550 4850 2550 4650
+$Comp
+L power:+5V #PWR?
+U 1 1 5DE9FE47
+P 2600 1400
+F 0 "#PWR?" H 2600 1250 50  0001 C CNN
+F 1 "+5V" H 2615 1573 50  0000 C CNN
+F 2 "" H 2600 1400 50  0001 C CNN
+F 3 "" H 2600 1400 50  0001 C CNN
+	1    2600 1400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2600 1400 2600 1450
+Wire Wire Line
+	2600 1650 2550 1650
+Wire Wire Line
+	2650 1650 2600 1650
+Connection ~ 2600 1650
+$Comp
+L power:+5V #PWR?
+U 1 1 5DE9FEBE
+P 3300 3450
+F 0 "#PWR?" H 3300 3300 50  0001 C CNN
+F 1 "+5V" H 3315 3623 50  0000 C CNN
+F 2 "" H 3300 3450 50  0001 C CNN
+F 3 "" H 3300 3450 50  0001 C CNN
+	1    3300 3450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3150 3450 3300 3450
+$Comp
+L power:GND #PWR?
+U 1 1 5DE9FFC3
+P 4500 5350
+F 0 "#PWR?" H 4500 5100 50  0001 C CNN
+F 1 "GND" H 4505 5177 50  0000 C CNN
+F 2 "" H 4500 5350 50  0001 C CNN
+F 3 "" H 4500 5350 50  0001 C CNN
+	1    4500 5350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4500 5350 4500 5250
+$Comp
+L power:+5V #PWR?
+U 1 1 5DEA002B
+P 4800 3600
+F 0 "#PWR?" H 4800 3450 50  0001 C CNN
+F 1 "+5V" H 4815 3773 50  0000 C CNN
+F 2 "" H 4800 3600 50  0001 C CNN
+F 3 "" H 4800 3600 50  0001 C CNN
+	1    4800 3600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4500 3650 4800 3650
+Wire Wire Line
+	4800 3650 4800 3600
+$Comp
+L Device:R_POT_TRIM_US RV?
+U 1 1 5DEA0129
+P 5200 3850
+F 0 "RV?" H 5133 3804 50  0000 R CNN
+F 1 "10k" H 5133 3895 50  0000 R CNN
+F 2 "" H 5200 3850 50  0001 C CNN
+F 3 "~" H 5200 3850 50  0001 C CNN
+	1    5200 3850
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	4900 3850 5050 3850
+Wire Wire Line
+	5200 3700 5200 3650
+Wire Wire Line
+	5200 3650 4800 3650
+Connection ~ 4800 3650
+$Comp
+L power:GND #PWR?
+U 1 1 5DEA02DA
+P 5200 4250
+F 0 "#PWR?" H 5200 4000 50  0001 C CNN
+F 1 "GND" H 5205 4077 50  0000 C CNN
+F 2 "" H 5200 4250 50  0001 C CNN
+F 3 "" H 5200 4250 50  0001 C CNN
+	1    5200 4250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5200 4250 5200 4000
+Wire Wire Line
+	4900 4250 5200 4250
+Connection ~ 5200 4250
+$Comp
+L power:+5V #PWR?
+U 1 1 5DEA03E6
+P 5000 4150
+F 0 "#PWR?" H 5000 4000 50  0001 C CNN
+F 1 "+5V" H 5015 4323 50  0000 C CNN
+F 2 "" H 5000 4150 50  0001 C CNN
+F 3 "" H 5000 4150 50  0001 C CNN
+	1    5000 4150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5000 4150 4900 4150
+$Comp
+L power:GND #PWR?
+U 1 1 5DEA065A
+P 3850 3950
+F 0 "#PWR?" H 3850 3700 50  0001 C CNN
+F 1 "GND" H 3855 3777 50  0000 C CNN
+F 2 "" H 3850 3950 50  0001 C CNN
+F 3 "" H 3850 3950 50  0001 C CNN
+	1    3850 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3850 3950 4100 3950
+$Comp
+L Device:Crystal Y?
+U 1 1 5DEA08E2
+P 3500 2600
+F 0 "Y?" V 3454 2731 50  0000 L CNN
+F 1 "12Mhz" V 3545 2731 50  0000 L CNN
+F 2 "" H 3500 2600 50  0001 C CNN
+F 3 "~" H 3500 2600 50  0001 C CNN
+	1    3500 2600
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3150 2550 3350 2550
+Wire Wire Line
+	3350 2550 3350 2450
+Wire Wire Line
+	3350 2450 3500 2450
+Wire Wire Line
+	3150 2650 3350 2650
+Wire Wire Line
+	3350 2650 3350 2750
+Wire Wire Line
+	3350 2750 3500 2750
+$Comp
+L power:GND #PWR?
+U 1 1 5DEA0C59
+P 3950 2600
+F 0 "#PWR?" H 3950 2350 50  0001 C CNN
+F 1 "GND" H 3955 2427 50  0000 C CNN
+F 2 "" H 3950 2600 50  0001 C CNN
+F 3 "" H 3950 2600 50  0001 C CNN
+	1    3950 2600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C_Small C?
+U 1 1 5DEA0CDC
+P 3750 2450
+F 0 "C?" V 3521 2450 50  0000 C CNN
+F 1 "22pF" V 3612 2450 50  0000 C CNN
+F 2 "" H 3750 2450 50  0001 C CNN
+F 3 "~" H 3750 2450 50  0001 C CNN
+	1    3750 2450
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:C_Small C?
+U 1 1 5DEA0D2F
+P 3750 2800
+F 0 "C?" V 3950 2800 50  0000 C CNN
+F 1 "22pF" V 3850 2800 50  0000 C CNN
+F 2 "" H 3750 2800 50  0001 C CNN
+F 3 "~" H 3750 2800 50  0001 C CNN
+	1    3750 2800
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3850 2450 3850 2600
+Wire Wire Line
+	3850 2600 3950 2600
+Connection ~ 3850 2600
+Wire Wire Line
+	3850 2600 3850 2800
+Wire Wire Line
+	3500 2450 3650 2450
+Connection ~ 3500 2450
+Wire Wire Line
+	3500 2750 3500 2800
+Wire Wire Line
+	3500 2800 3650 2800
+Connection ~ 3500 2750
+Wire Wire Line
+	4100 3850 4100 3650
+Wire Wire Line
+	4100 3650 3150 3650
+Wire Wire Line
+	4100 4050 4050 4050
+Wire Wire Line
+	4050 4050 4050 3750
+Wire Wire Line
+	4050 3750 3150 3750
+Wire Wire Line
+	4100 4750 3750 4750
+Wire Wire Line
+	3750 4750 3750 4050
+Wire Wire Line
+	3750 4050 3150 4050
+Wire Wire Line
+	4100 4850 3650 4850
+Wire Wire Line
+	3650 4850 3650 4150
+Wire Wire Line
+	3650 4150 3150 4150
+Wire Wire Line
+	4100 4950 3550 4950
+Wire Wire Line
+	3550 4950 3550 4250
+Wire Wire Line
+	3550 4250 3150 4250
+Wire Wire Line
+	4100 5050 3450 5050
+Wire Wire Line
+	3450 5050 3450 4350
+Wire Wire Line
+	3450 4350 3150 4350
+$Comp
+L Switch:SW_Reed SW?
+U 1 1 5DEA4702
+P 3500 1700
+F 0 "SW?" V 3454 1785 50  0000 L CNN
+F 1 "SW_Reed" V 3545 1785 50  0000 L CNN
+F 2 "" H 3500 1700 50  0001 C CNN
+F 3 "" H 3500 1700 50  0001 C CNN
+	1    3500 1700
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	2600 1450 3500 1450
+Wire Wire Line
+	3500 1450 3500 1500
+Connection ~ 2600 1450
+Wire Wire Line
+	2600 1450 2600 1650
+$Comp
+L MCU_Microchip_ATmega:ATmega328P-PU U?
+U 1 1 5DE9FBBC
+P 2550 3150
+F 0 "U?" H 1909 3196 50  0000 R CNN
+F 1 "ATmega328P-PU" H 1909 3105 50  0000 R CNN
+F 2 "Package_DIP:DIP-28_W7.62mm" H 2550 3150 50  0001 C CIN
+F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/ATmega328_P%20AVR%20MCU%20with%20picoPower%20Technology%20Data%20Sheet%2040001984A.pdf" H 2550 3150 50  0001 C CNN
+	1    2550 3150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3150 2050 3500 2050
+Wire Wire Line
+	3500 1900 3500 2050
+$EndSCHEMATC

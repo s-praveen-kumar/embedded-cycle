@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+TARGET=atmega328p
+F_CPU=12000000
+
+avr-gcc -Os -mmcu=$TARGET -DF_CPU=$F_CPU -c *.c;
+avr-gcc -mmcu=$TARGET -DF_CPU=$F_CPU -o bin/tmp.elf *.o;
+avr-objcopy -O ihex bin/tmp.elf bin/out.hex;
+rm *.o
