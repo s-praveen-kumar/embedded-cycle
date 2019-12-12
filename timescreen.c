@@ -3,12 +3,10 @@
 #include "include/DS3231.h"
 
 void updateTimeFromRTC();
-void printTime();
-int sec, min, hr, renderDate = 1;
+int sec, min, hr;
 
 void initTimeScreen(){
   updateTimeFromRTC();
-  printTime();
 }
 
 void updateTimeFromRTC(){
@@ -16,10 +14,9 @@ void updateTimeFromRTC(){
   sec = getSeconds();
   min = getMinutes();
   hr = getHour();
-  renderDate = 1;
 }
 
-void onTickTimeScreen(){                //To be called from ISR
+void updateTimeScreen(){                //To be called from ISR
   sec++;
   if(sec>=60){
     sec = 0;
@@ -28,10 +25,9 @@ void onTickTimeScreen(){                //To be called from ISR
       updateTimeFromRTC();    //Cross check time with RTC each one hour.
     }
   }
-  printTime();
 }
 
-void printTime(){
+void renderTimeScreen(){
     moveToLine1();
     printIntFixed(hr,2);
     printCh(':');
@@ -46,15 +42,12 @@ void printTime(){
     printIntFixed(frac,2);
     writeData(0xDF);    //Code for Degree symbol
     printCh('C');
-    if(renderDate){
-      clearRegion(0,1,16,1);
-      printIntFixed(getDate(),2);
-      printCh('-');
-      printIntFixed(getMonth(),2);
-      printCh('-');
-      printIntFixed(getYear(),2);
-      printStr("   ");
-      printStr(getDay3());
-      renderDate = 0;       //To avoid re rendering the same date to save time
-  }
+    moveToLine2();
+    printIntFixed(getDate(),2);
+    printCh('-');
+    printIntFixed(getMonth(),2);
+    printCh('-');
+    printIntFixed(getYear(),2);
+    printStr("   ");
+    printStr(getDay3());
 }
