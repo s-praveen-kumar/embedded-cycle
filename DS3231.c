@@ -34,8 +34,6 @@ void writeRegister(uint8_t add, uint8_t data){
   I2CStart();
   I2CSLA_W(RTC_ADD);
   I2CWrite(add);
-  I2CStart();
-  I2CSLA_W(RTC_ADD);
   I2CWrite(data);
   I2CStop();
 }
