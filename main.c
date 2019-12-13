@@ -5,6 +5,7 @@
 #include"include/lcd.h"
 #include"include/DS3231.h"
 #include"include/screens.h"
+#include"include/settings.h"
 
 void loop();
 void initTimer();
@@ -19,7 +20,10 @@ int main(){
   initLCD(&PORTD,PD0,PD1);
   initRTC();
   hideCursor();
+
+  //Screens
   initTimeScreen();
+  initSettingScreen();
 
   //Setting Interrupt
   initTimer();
@@ -41,7 +45,7 @@ void initTimer(){
 
 void initSwitches(){
   PCICR |= 1<<PCIE1;
-  PCMSK1 |= 1<<PCINT11;
+  PCMSK1 |= 1<<PCINT11 | 1<<PCINT10 | 1<<PCINT9;
 }
 
 void renderCurrentScreen(){
@@ -51,6 +55,9 @@ void renderCurrentScreen(){
       break;
     case TIME_SCREEN:
       renderTimeScreen();
+      break;
+    case SETTING_SCREEN:
+      renderSettingScreen();
       break;
   }
 }
@@ -67,10 +74,16 @@ ISR(TIMER1_COMPA_vect){
 }
 
 ISR(PCINT1_vect){
-  if(PINC & 1<<3){       //PC3
+  if(!(PINC & 1<<3)){       //PC3
     currentScreen++;
     if(currentScreen >= SCREENS_COUNT)
         currentScreen = 0;
-    renderCurrentScreen();
+  } else if(!(PINC & 1<<2)){   //PC2
+      if(currentScreen == SETTING_SCREEN)
+        updateSettingScreen(NEXT_SETTING);
+  } else if(!(PINC & 1<<1)){   //PC1
+      if(currentScreen == SETTING_SCREEN)
+          updateSettingScreen(FLIP_SETTING);
   }
+  renderCurrentScreen();
 }
