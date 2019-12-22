@@ -12,16 +12,22 @@ void checkHalt();
 void initSpeedScreen(){
   count = 0;
   lastTime = 0;
+  speed = 0;
+  distance = 0;
   circ = 3.1415*diameter; //m
 }
 
 
-void updateSpeedScreen(){
+void updateSpeedScreen(uint8_t sense){
+    if(sense){
     count++;
     dt = getMillis() - lastTime;
     lastTime = getMillis();
     speed = (circ*3600)/(float)dt;
     distance = count*circ/1000.0;
+  } else if(getMillis() - lastTime > HALT_THRESHOLD){
+    speed = 0;
+  }
 }
 
 void renderSpeedScreen(){

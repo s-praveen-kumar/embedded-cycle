@@ -23,7 +23,7 @@ void renderSettingScreen();
 //<<<<<<SpeedScreen
 #define HALT_THRESHOLD 10000UL
 void initSpeedScreen();
-void updateSpeedScreen();
+void updateSpeedScreen(uint8_t sense);
 void renderSpeedScreen();
 
 #endif

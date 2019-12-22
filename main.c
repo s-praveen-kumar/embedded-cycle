@@ -94,7 +94,7 @@ ISR(PCINT1_vect){
 
 ISR(PCINT0_vect){
   if(!(PINB & 1)){          //PB0
-    updateSpeedScreen();
+    updateSpeedScreen(1);
     shouldRender = currentScreen == SPEED_SCREEN;
   }
 }
@@ -103,6 +103,10 @@ void loop(){
   if(millis%1000 == 0){
     updateTimeScreen();
     shouldRender = currentScreen == TIME_SCREEN;
+  }
+  if(millis%5000 == 0){
+    updateSpeedScreen(0);
+    shouldRender = currentScreen == SPEED_SCREEN;
   }
   if(shouldRender){
     renderCurrentScreen();
