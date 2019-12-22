@@ -35,7 +35,7 @@ int main(){
   initTimer();
   initSwitches();
   sei();
-
+  renderCurrentScreen();
   while(1)
     loop();
   return 0;
@@ -102,9 +102,8 @@ ISR(PCINT0_vect){
 void loop(){
   if(millis%1000 == 0){
     updateTimeScreen();
-    if(currentScreen == TIME_SCREEN)
-      renderTimeScreen();
-    }
+    shouldRender = currentScreen == TIME_SCREEN;
+  }
   if(shouldRender){
     renderCurrentScreen();
     shouldRender = 0;

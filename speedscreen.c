@@ -1,18 +1,38 @@
 #include "include/screens.h"
 #include "include/lcd.h"
 
-long count;
+uint16_t count;
+uint32_t lastTime;
+uint16_t dt;
+float speed, distance;
+const float diameter = 0.65;    //m
+float circ;
+void checkHalt();
 
 void initSpeedScreen(){
   count = 0;
+  lastTime = 0;
+  circ = 3.1415*diameter; //m
 }
 
 
 void updateSpeedScreen(){
-  count++;
+    count++;
+    dt = getMillis() - lastTime;
+    lastTime = getMillis();
+    speed = (circ*3600)/(float)dt;
+    distance = count*circ/1000.0;
 }
 
 void renderSpeedScreen(){
   clearScreen();
-  printInt(count);
+  printIntFixed((uint8_t)speed,2);
+  printCh('.');
+  printIntFixed(((uint8_t)(speed*100))%100,2);
+  printStr("km/h");
+  moveToLine2();
+  printIntFixed((uint8_t)distance,2);
+  printCh('.');
+  printIntFixed(((uint8_t)(distance*100))%100,2);
+  printStr("km");
 }
