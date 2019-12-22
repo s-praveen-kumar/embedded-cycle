@@ -1,6 +1,7 @@
 #include"include/screens.h"
 #include"include/lcd.h"
 #include"include/settings.h"
+#include<avr/io.h>
 
 uint8_t position;
 uint8_t timeFormat , tempUnit, backLight;
@@ -21,6 +22,7 @@ void initSettingScreen(){
   timeFormat = TIME_FORMAT_24;
   tempUnit = TEMP_UNIT_C;
   backLight = ON;
+  PORTB |= 1<<1;
 }
 
 void updateSettingScreen(uint8_t a){
@@ -38,6 +40,10 @@ void updateSettingScreen(uint8_t a){
         break;
       case 2:
         backLight=!backLight;
+        if(backLight)
+          PORTB |= 1<<1;
+        else
+          PORTB &= ~(1<<1);
     }
   }
 }

@@ -20,12 +20,8 @@ void updateTimeFromRTC(){
 void updateTimeScreen(){                //To be called from ISR
   sec++;
   if(sec>=60){
-    sec = 0;
-    min++;
-    if(min>=60){
-      updateTimeFromRTC();    //Cross check time with RTC each one hour.
+      updateTimeFromRTC();    //Cross check time with RTC each one minute.
     }
-  }
 }
 
 void renderTimeScreen(){

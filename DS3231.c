@@ -2,8 +2,8 @@
 #include "include/i2c.h"
 
 
-char DAY3[7][4] ={"SUN","MON","TUE","WED","THU","FRI","SAT"};
-char DAY_FULL[7][10] ={"SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"};
+char DAY3[7][4] ={"MON","TUE","WED","THU","FRI","SAT","SUN"};
+char DAY_FULL[7][10] ={"MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"};
 
 uint8_t secByte, minByte, hourByte, dateByte, dayByte, monthByte, yearByte;
 
@@ -73,7 +73,7 @@ uint8_t getYear(){
 }
 
 char* getDay3(){
-  return DAY3[dayByte];
+  return DAY3[dayByte-1];
 }
 
 char* getDayFull(){

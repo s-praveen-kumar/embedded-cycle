@@ -4,10 +4,11 @@
 #include<stdint.h>
 
 #define SCREENS_COUNT 3
-#define WELCOME_SCREEN 0
+#define SPEED_SCREEN 0
 #define TIME_SCREEN 1
 #define SETTING_SCREEN 2
 
+long getMillis();
 //<<<<<<TimeScreen
 void initTimeScreen();
 void updateTimeScreen();
@@ -17,5 +18,11 @@ void renderTimeScreen();
 void initSettingScreen();
 void updateSettingScreen(uint8_t a);
 void renderSettingScreen();
+
+
+//<<<<<<SpeedScreen
+void initSpeedScreen();
+void updateSpeedScreen();
+void renderSpeedScreen();
 
 #endif

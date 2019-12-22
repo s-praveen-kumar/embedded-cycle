@@ -11,12 +11,17 @@ void loop();
 void initTimer();
 void initSwitches();
 void renderCurrentScreen();
-void renderWelcomeScreen();
-int currentScreen = 0;
+
+volatile int currentScreen = 0;
+volatile uint32_t millis = 0;
+volatile uint8_t shouldRender = 1;
 
 int main(){
   //Initializations
   DDRD = 0xFF;
+  DDRB &= ~1;
+  DDRB |= 1<<1;
+  PORTB |= 1;             //Enable PULLUP
   initLCD(&PORTD,PD0,PD1);
   initRTC();
   hideCursor();
@@ -24,34 +29,36 @@ int main(){
   //Screens
   initTimeScreen();
   initSettingScreen();
+  initSpeedScreen();
 
   //Setting Interrupt
   initTimer();
   initSwitches();
   sei();
 
-  renderCurrentScreen();
-  while(1);
+  while(1)
+    loop();
   return 0;
 }
 
 void initTimer(){
   TCNT1 = 0;              //Reset Counter
   TCCR1B|= 1<<WGM12;      //CTC mode
-  TCCR1B|= 1<<CS12;       //256 prescaler
-  OCR1A = (F_CPU/256);
+  TCCR1B|= 1<<CS11;       //8 prescaler
+  OCR1A = (F_CPU/1000/8); //Every 1ms
   TIMSK1 |= 1<<OCIE1A;    //Enable Timer
 }
 
 void initSwitches(){
-  PCICR |= 1<<PCIE1;
+  PCICR |= 1<<PCIE1 | 1<<PCIE0;
   PCMSK1 |= 1<<PCINT11 | 1<<PCINT10 | 1<<PCINT9;
+  PCMSK0 |= 1<<PCINT0;
 }
 
 void renderCurrentScreen(){
   switch (currentScreen) {
-    case WELCOME_SCREEN:
-      renderWelcomeScreen();
+    case SPEED_SCREEN:
+      renderSpeedScreen();
       break;
     case TIME_SCREEN:
       renderTimeScreen();
@@ -62,15 +69,12 @@ void renderCurrentScreen(){
   }
 }
 
-void renderWelcomeScreen(){
-  clearScreen();
-  printStr("WELCOME!");
+long getMillis(){
+  return millis;
 }
 
 ISR(TIMER1_COMPA_vect){
-  updateTimeScreen();
-  if(currentScreen == TIME_SCREEN)
-    renderTimeScreen();
+  millis++;
 }
 
 ISR(PCINT1_vect){
@@ -85,5 +89,24 @@ ISR(PCINT1_vect){
       if(currentScreen == SETTING_SCREEN)
           updateSettingScreen(FLIP_SETTING);
   }
-  renderCurrentScreen();
+  shouldRender = 1;
+}
+
+ISR(PCINT0_vect){
+  if(!(PINB & 1)){          //PB0
+    updateSpeedScreen();
+    shouldRender = currentScreen == SPEED_SCREEN;
+  }
+}
+
+void loop(){
+  if(millis%1000 == 0){
+    updateTimeScreen();
+    if(currentScreen == TIME_SCREEN)
+      renderTimeScreen();
+    }
+  if(shouldRender){
+    renderCurrentScreen();
+    shouldRender = 0;
+  }
 }
