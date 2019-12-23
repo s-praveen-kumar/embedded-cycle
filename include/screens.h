@@ -8,7 +8,7 @@
 #define TIME_SCREEN 1
 #define SETTING_SCREEN 2
 
-long getMillis();
+uint32_t getMillis();
 //<<<<<<TimeScreen
 void initTimeScreen();
 void updateTimeScreen();

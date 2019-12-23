@@ -16,6 +16,7 @@ volatile int currentScreen = 0;
 volatile uint32_t millis = 0;
 volatile uint8_t shouldRender = 1;
 
+extern uint32_t lastTime;
 int main(){
   //Initializations
   DDRD = 0xFF;
@@ -34,8 +35,8 @@ int main(){
   //Setting Interrupt
   initTimer();
   initSwitches();
-  sei();
   renderCurrentScreen();
+  sei();
   while(1)
     loop();
   return 0;
@@ -69,12 +70,21 @@ void renderCurrentScreen(){
   }
 }
 
-long getMillis(){
+uint32_t getMillis(){
   return millis;
 }
 
 ISR(TIMER1_COMPA_vect){
   millis++;
+  if(millis%1000 == 0){
+    updateTimeScreen();
+    shouldRender |= currentScreen == TIME_SCREEN;
+    if(millis - lastTime > HALT_THRESHOLD){
+      updateSpeedScreen(0);
+      shouldRender |= currentScreen == SPEED_SCREEN;
+      lastTime = millis;
+    }
+  }
 }
 
 ISR(PCINT1_vect){
@@ -95,19 +105,11 @@ ISR(PCINT1_vect){
 ISR(PCINT0_vect){
   if(!(PINB & 1)){          //PB0
     updateSpeedScreen(1);
-    shouldRender = currentScreen == SPEED_SCREEN;
+    shouldRender |= currentScreen == SPEED_SCREEN;
   }
 }
 
 void loop(){
-  if(millis%1000 == 0){
-    updateTimeScreen();
-    shouldRender = currentScreen == TIME_SCREEN;
-  }
-  if(millis%5000 == 0){
-    updateSpeedScreen(0);
-    shouldRender = currentScreen == SPEED_SCREEN;
-  }
   if(shouldRender){
     renderCurrentScreen();
     shouldRender = 0;
