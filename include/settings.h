@@ -3,8 +3,6 @@
 
 #include<stdint.h>
 
-#define FLIP_SETTING 1
-#define NEXT_SETTING 0
 #define TIME_FORMAT_24 0
 #define TIME_FORMAT_12 1
 #define TEMP_UNIT_C  0

@@ -4,9 +4,10 @@
 #include "include/settings.h"
 
 void updateTimeFromRTC();
-int sec, min, hr;
-
-void initTimeScreen(){
+uint8_t sec, min, hr;
+uint8_t updateFlag;
+extern uint8_t currentScreen;
+void TimeScreen_init(){
   updateTimeFromRTC();
 }
 
@@ -15,16 +16,25 @@ void updateTimeFromRTC(){
   sec = getSeconds();
   min = getMinutes();
   hr = getHour();
+  updateFlag = 0;
 }
 
-void updateTimeScreen(){                //To be called from ISR
+void TimeScreen_update(){                //To be called from ISR
   sec++;
   if(sec>=60){
-      updateTimeFromRTC();    //Cross check time with RTC each one minute.
+      updateFlag = 1;   //Cross check time with RTC each one minute.
     }
 }
 
-void renderTimeScreen(){
+void TimeScreen_input(uint8_t btn){
+  if(btn == MODE_BUTTON)
+    currentScreen = SPEED_SCREEN;
+  else
+    currentScreen = SETTING_SCREEN;
+}
+
+void TimeScreen_render(){
+    if(updateFlag)  updateTimeFromRTC();
     moveToLine1();
     if(getTimeFormat()==TIME_FORMAT_24)
         printIntFixed(hr,2);

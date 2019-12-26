@@ -5,6 +5,7 @@
 
 uint8_t position;
 uint8_t timeFormat , tempUnit, backLight;
+extern uint8_t currentScreen;
 
 uint8_t getTimeFormat(){
   return timeFormat;
@@ -17,7 +18,7 @@ uint8_t getTempUnit(){
 uint8_t getLight(){
   return backLight;
 }
-void initSettingScreen(){
+void SettingScreen_init(){
   position = 0;
   timeFormat = TIME_FORMAT_24;
   tempUnit = TEMP_UNIT_C;
@@ -25,12 +26,16 @@ void initSettingScreen(){
   PORTB |= 1<<1;
 }
 
-void updateSettingScreen(uint8_t a){
-  if(a == NEXT_SETTING){
+void SettingScreen_update(uint8_t a){
+
+}
+
+void SettingScreen_input(uint8_t btn){
+  if(btn == A_BUTTON){
     position++;
     if(position>=3)
       position = 0;
-  } else{
+  } else if (btn == B_BUTTON){
     switch (position) {
       case 0:
         timeFormat=!timeFormat;
@@ -45,10 +50,11 @@ void updateSettingScreen(uint8_t a){
         else
           PORTB &= ~(1<<1);
     }
-  }
+  } else
+    currentScreen = SPEED_SCREEN;
 }
 
-void renderSettingScreen(){
+void SettingScreen_render(){
   clearScreen();
   printStr("Time ");
   printStr("Temp ");

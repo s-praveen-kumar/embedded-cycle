@@ -7,6 +7,8 @@
 #include"include/screens.h"
 #include"include/settings.h"
 
+#define DEBOUNCE_THRESHOLD 500
+
 void loop();
 void initTimer();
 void initSwitches();
@@ -15,6 +17,7 @@ void renderCurrentScreen();
 volatile int currentScreen = 0;
 volatile uint32_t millis = 0;
 volatile uint8_t shouldRender = 1;
+volatile uint32_t lastButtonTime;
 
 extern uint32_t lastTime;
 int main(){
@@ -28,14 +31,15 @@ int main(){
   hideCursor();
 
   //Screens
-  initTimeScreen();
-  initSettingScreen();
-  initSpeedScreen();
+  TimeScreen_init();
+  SettingScreen_init();
+  SpeedScreen_init();
 
   //Setting Interrupt
   initTimer();
   initSwitches();
   renderCurrentScreen();
+  lastButtonTime = 0;
   sei();
   while(1)
     loop();
@@ -59,17 +63,30 @@ void initSwitches(){
 void renderCurrentScreen(){
   switch (currentScreen) {
     case SPEED_SCREEN:
-      renderSpeedScreen();
+      SpeedScreen_render();
       break;
     case TIME_SCREEN:
-      renderTimeScreen();
+      TimeScreen_render();
       break;
     case SETTING_SCREEN:
-      renderSettingScreen();
+      SettingScreen_render();
       break;
   }
 }
 
+void inputCurrentScreen(uint8_t btn){
+  switch (currentScreen) {
+    case SPEED_SCREEN:
+      SpeedScreen_input(btn);
+      break;
+    case TIME_SCREEN:
+      TimeScreen_input(btn);
+      break;
+    case SETTING_SCREEN:
+      SettingScreen_input(btn);
+      break;
+  }
+}
 uint32_t getMillis(){
   return millis;
 }
@@ -77,10 +94,10 @@ uint32_t getMillis(){
 ISR(TIMER1_COMPA_vect){
   millis++;
   if(millis%1000 == 0){
-    updateTimeScreen();
+    TimeScreen_update();
     shouldRender |= currentScreen == TIME_SCREEN;
     if(millis - lastTime > HALT_THRESHOLD){
-      updateSpeedScreen(0);
+      SpeedScreen_update(0);
       shouldRender |= currentScreen == SPEED_SCREEN;
       lastTime = millis;
     }
@@ -88,23 +105,22 @@ ISR(TIMER1_COMPA_vect){
 }
 
 ISR(PCINT1_vect){
-  if(!(PINC & 1<<3)){       //PC3
-    currentScreen++;
-    if(currentScreen >= SCREENS_COUNT)
-        currentScreen = 0;
-  } else if(!(PINC & 1<<2)){   //PC2
-      if(currentScreen == SETTING_SCREEN)
-        updateSettingScreen(NEXT_SETTING);
-  } else if(!(PINC & 1<<1)){   //PC1
-      if(currentScreen == SETTING_SCREEN)
-          updateSettingScreen(FLIP_SETTING);
+  if(millis - lastButtonTime < DEBOUNCE_THRESHOLD)
+    return;
+  if(!(PINC & 1<<3)){       //PC3 = Mode button
+    inputCurrentScreen(MODE_BUTTON);
+  } else if(!(PINC & 1<<2)){   //PC2 = A Button
+    inputCurrentScreen(A_BUTTON);
+  } else if(!(PINC & 1<<1)){   //PC1 = B Button
+    inputCurrentScreen(B_BUTTON);
   }
+  lastButtonTime = millis;
   shouldRender = 1;
 }
 
 ISR(PCINT0_vect){
-  if(!(PINB & 1)){          //PB0
-    updateSpeedScreen(1);
+  if(!(PINB & 1)){          //PB0 = Reed sensor input
+    SpeedScreen_update(1);
     shouldRender |= currentScreen == SPEED_SCREEN;
   }
 }

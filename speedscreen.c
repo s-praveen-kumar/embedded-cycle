@@ -7,9 +7,9 @@ uint16_t dt;
 float speed, distance;
 const float diameter = 0.65;    //m
 float circ;
-void checkHalt();
+extern uint8_t currentScreen;
 
-void initSpeedScreen(){
+void SpeedScreen_init(){
   count = 0;
   lastTime = 0;
   speed = 0.0;
@@ -18,20 +18,28 @@ void initSpeedScreen(){
 }
 
 
-void updateSpeedScreen(uint8_t sense){
+void SpeedScreen_update(uint8_t sense){
     if(sense){
-    if(count++){
-      dt = getMillis() - lastTime;
-      speed = (circ*3600)/(float)dt;
-      distance = count*circ/1000.0;
-  }
-    lastTime = getMillis();
-  } else{
-    speed = 0;
-  }
+      if(count++){
+        dt = getMillis() - lastTime;
+        speed = (circ*3600)/(float)dt;
+        distance = count*circ/1000.0;
+      }
+      lastTime = getMillis();
+    }
+    else{
+      speed = 0;
+    }
 }
 
-void renderSpeedScreen(){
+void SpeedScreen_input(uint8_t btn){
+  if(btn == MODE_BUTTON)
+    currentScreen = TIME_SCREEN;
+  else if(btn == B_BUTTON)
+    currentScreen = SETTING_SCREEN;
+}
+
+void SpeedScreen_render(){
   clearScreen();
   printIntFixed((uint8_t)speed,2);
   printCh('.');
