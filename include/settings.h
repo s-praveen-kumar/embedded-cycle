@@ -1,5 +1,5 @@
 #ifndef _SETTING_H
-#define _SETTING
+#define _SETTING_H
 
 #include<stdint.h>
 
@@ -9,6 +9,11 @@
 #define TEMP_UNIT_F 1
 #define ON 1
 #define OFF 0
+
+//Address
+#define TIME_FORMAT_ADDRESS 0x00
+#define TEMP_UNIT_ADDRESS 0x01
+#define LIGHT_ADDRESS 0x02
 
 uint8_t getTimeFormat();
 uint8_t getTempUnit();

@@ -7,7 +7,7 @@
 #include"include/screens.h"
 #include"include/settings.h"
 
-#define DEBOUNCE_THRESHOLD 500
+#define DEBOUNCE_THRESHOLD 600
 
 void loop();
 void initTimer();

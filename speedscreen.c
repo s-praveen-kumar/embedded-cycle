@@ -43,11 +43,11 @@ void SpeedScreen_render(){
   clearScreen();
   printIntFixed((uint8_t)speed,2);
   printCh('.');
-  printIntFixed(((uint8_t)(speed*100))%100,2);
+  printIntFixed(((uint16_t)(speed*100))%100,2);
   printStr("km/h");
   moveToLine2();
   printIntFixed((uint8_t)distance,2);
   printCh('.');
-  printIntFixed(((uint8_t)(distance*100))%100,2);
+  printIntFixed(((uint16_t)(distance*100))%100,2);
   printStr("km");
 }

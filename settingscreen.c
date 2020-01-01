@@ -1,6 +1,7 @@
 #include"include/screens.h"
 #include"include/lcd.h"
 #include"include/settings.h"
+#include"include/eeprom.h"
 #include<avr/io.h>
 
 uint8_t position;
@@ -20,10 +21,10 @@ uint8_t getLight(){
 }
 void SettingScreen_init(){
   position = 0;
-  timeFormat = TIME_FORMAT_24;
-  tempUnit = TEMP_UNIT_C;
-  backLight = ON;
-  PORTB |= 1<<1;
+   timeFormat = readAddress(TIME_FORMAT_ADDRESS);
+   tempUnit = readAddress(TEMP_UNIT_ADDRESS);
+   backLight = readAddress(LIGHT_ADDRESS);
+  PORTB |= backLight<<1;
 }
 
 void SettingScreen_update(uint8_t a){
@@ -39,12 +40,15 @@ void SettingScreen_input(uint8_t btn){
     switch (position) {
       case 0:
         timeFormat=!timeFormat;
+         writeAddress(TIME_FORMAT_ADDRESS, timeFormat);
         break;
       case 1:
         tempUnit=!tempUnit;
+        writeAddress(TEMP_UNIT_ADDRESS, tempUnit);
         break;
       case 2:
         backLight=!backLight;
+        writeAddress(LIGHT_ADDRESS, backLight);
         if(backLight)
           PORTB |= 1<<1;
         else
