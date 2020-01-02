@@ -14,6 +14,10 @@ void initTimer();
 void initSwitches();
 void renderCurrentScreen();
 
+const uint8_t seqLength = 10;
+const uint8_t KEY_SEQUENCE[] = {MODE_BUTTON, A_BUTTON, MODE_BUTTON, B_BUTTON, MODE_BUTTON, MODE_BUTTON, MODE_BUTTON, A_BUTTON, A_BUTTON, B_BUTTON};
+
+volatile uint8_t curPosInSeq = 0;
 volatile int currentScreen = 0;
 volatile uint32_t millis = 0;
 volatile uint8_t shouldRender = 1;
@@ -34,6 +38,7 @@ int main(){
   TimeScreen_init();
   SettingScreen_init();
   SpeedScreen_init();
+  ConfigScreen_init();
 
   //Setting Interrupt
   initTimer();
@@ -71,6 +76,9 @@ void renderCurrentScreen(){
     case SETTING_SCREEN:
       SettingScreen_render();
       break;
+    case CONFIG_SCREEN:
+      ConfigScreen_render();
+      break;
   }
 }
 
@@ -85,6 +93,17 @@ void inputCurrentScreen(uint8_t btn){
     case SETTING_SCREEN:
       SettingScreen_input(btn);
       break;
+    case CONFIG_SCREEN:
+      Configcreen_input(btn);
+      break;
+  }
+  if(btn == KEY_SEQUENCE[curPosInSeq])
+    curPosInSeq++;
+  else
+    curPosInSeq = 0;
+  if(curPosInSeq == seqLength){
+    curPosInSeq = 0;
+    currentScreen = CONFIG_SCREEN;
   }
 }
 uint32_t getMillis(){
